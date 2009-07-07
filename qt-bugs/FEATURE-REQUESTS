@@ -1,0 +1,18 @@
+QtWebKit
+========
+
+- Need a way to expose functions to JS that is more powerful than the current
+  support for exposing the slots on a QObject. We need to be able to add
+  functions directly to the window object so that we can expose methods
+  directly without a containing object.
+
+  Workaround for now: Use the evaluateJavascript facility to add a fowarding
+  method written in js (yuck!).
+
+- We also need a way to be able to expose methods that are defined at run
+  time. For example if we wanted to implement something like the flash-js
+  bridge where we do not know at compile time which methods should be
+  available we cannot implement this using the current API.
+
+  Not sure if we can workaround this one, though something might be possible
+  if you created a metaobject on the fly.
