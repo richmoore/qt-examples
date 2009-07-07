@@ -1,0 +1,16 @@
+<html>
+<body>
+<h1>Test 2 page for custom JS object in QWebView</h1>
+
+You should see a message on your console saying: 'Hello from JS page 2!!!!'.
+
+<a href="test.html">page one</a>
+
+<script>
+  MyApi.doSomething( 'Hello from JS page 2!!!!' );
+
+  sum = MyApi.doSums( 2, 3 );
+  alert( 'C++ says the sum is ' + sum );
+</script>
+</body>
+</html>
