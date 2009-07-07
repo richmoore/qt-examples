@@ -61,7 +61,6 @@ void ScriptUi::autoConnectFunctions()
     QScriptValueIterator it( global );
     while ( it.hasNext() ) {
 	it.next();
-	// qDebug() << it.name() << ": " << it.value().toString();
 
 	// We only care about functions
 	if ( !it.value().isFunction() )
