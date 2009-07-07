@@ -28,8 +28,8 @@ bool ScriptUi::loadScript( const QString &filename )
 
     QScriptValue r = engine->evaluate(source);
     if ( engine->hasUncaughtException() ) {
-	qDebug() << "Uncaught js exception at: "  << r.toString() 
-		 << " at line " << engine->uncaughtExceptionLineNumber();
+	qDebug() << "Uncaught js exception,"  << r.toString() 
+		 << "at line" << engine->uncaughtExceptionLineNumber();
 
 	return false;
     }
