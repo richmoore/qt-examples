@@ -94,12 +94,24 @@ void ScriptUi::autoConnectFunctions()
     }
 }
 
+void ScriptUi::exposeWidgets()
+{
+    QScriptValue global = engine->globalObject();
+
+    QList<QWidget *> kids = ui->findChildren<QWidget *>();
+    foreach ( QWidget *child, kids ) {
+	QScriptValue wrapper = engine->newQObject( child );
+	global.setProperty( child->objectName(), wrapper );
+    }
+}
+
 void ScriptUi::connectScript()
 {
     // autoconnect all methods from the script to the appropriate widgets
     autoConnectFunctions();
 
     // Expose all widgets from the ui file to the script
+    exposeWidgets();
 }
 
 QWidget *ScriptUi::view() const

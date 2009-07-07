@@ -21,7 +21,7 @@ public:
 
 private:
     void autoConnectFunctions();
-
+    void exposeWidgets();
 
 private:
     QScriptEngine *engine;
