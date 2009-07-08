@@ -86,6 +86,7 @@ void ScriptUi::autoConnectFunctions()
 	    continue;
 	}
 
+	// TODO: Support signals with arguments
 	signalName = QString("2%1()").arg(signalName); // Evil hack
 	QByteArray sName = signalName.toUtf8();
 	bool ok = qScriptConnect( obj, sName.data(), global, it.value() );
