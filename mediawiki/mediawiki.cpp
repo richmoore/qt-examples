@@ -157,7 +157,6 @@ void MediaWiki::finished( QNetworkReply *reply )
 
     if ( d->state == StateApiUpdating ) {
 	bool ok = processBaseResult( reply );
-	emit finished( ok );
 	reply->deleteLater();
 
 	d->state = StateReady;
