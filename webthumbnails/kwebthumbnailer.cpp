@@ -84,6 +84,9 @@ void KWebThumbnailer::completed( bool success )
 
     d->thumbnail = d->thumbnail.scaled( d->size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation );
 
+    delete d->page;
+    d->page = 0;
+
     emit done(success);
 }
 
