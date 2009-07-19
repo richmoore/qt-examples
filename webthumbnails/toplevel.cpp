@@ -22,7 +22,6 @@ TopLevel::TopLevel()
     layout->addWidget(view);
 
     thumbnailer = new KWebThumbnailer( this );
-    thumbnailer->setZoomFactory( 0.4 );
     thumbnailer->setSize( QSize(300,400) );
     thumbnailer->setUrl( QUrl("http://www.kde.org/") );
     connect( thumbnailer, SIGNAL(done(bool)), SLOT(completed(bool)) );
@@ -44,5 +43,5 @@ void TopLevel::completed( bool success )
 	return;
     }
 
-    view->setPixmap( thumbnailer->thumbnail() );
+    view->setPixmap( QPixmap::fromImage(thumbnailer->thumbnail()) );
 }

@@ -1,4 +1,3 @@
-#include <QtCore/QDebug>
 #include <QtCore/QUrl>
 #include <QtCore/QSize>
 #include <QtGui/QPainter>
@@ -14,10 +13,9 @@ public:
     }
 
     QWebPage *page;
-    QPixmap thumbnail;
+    QImage thumbnail;
     QSize size;
     QUrl url;
-    double zoom;
 };
 
 KWebThumbnailer::KWebThumbnailer( QObject *parent )
@@ -49,46 +47,47 @@ void KWebThumbnailer::setSize( const QSize &size )
     d->size = size;
 }
 
-void KWebThumbnailer::setZoomFactory( double zoom )
-{
-    d->zoom = zoom;
-}
-
 void KWebThumbnailer::start()
 {
     d->page = new QWebPage( this );
     d->page->mainFrame()->setScrollBarPolicy( Qt::Horizontal, Qt::ScrollBarAlwaysOff );
     d->page->mainFrame()->setScrollBarPolicy( Qt::Vertical, Qt::ScrollBarAlwaysOff );
-    d->page->mainFrame()->setZoomFactor( d->zoom );
-    d->page->setViewportSize( d->size );
-
     d->page->mainFrame()->load( d->url );
 
     connect( d->page, SIGNAL(loadFinished(bool)), this, SLOT(completed(bool)) );
-
-    qDebug() << "Started..." << endl;
 }
 
 void KWebThumbnailer::completed( bool success )
 {
-    qDebug() << "Completed, " << success << endl;
     if ( !success ) {
 	delete d->page;
 	d->page = 0;
-	d->thumbnail = QPixmap();
+	d->thumbnail = QImage();
 	emit done(false);
 
 	return;
     }
 
-    d->thumbnail = QPixmap( d->size );
+    // find proper size, we stick to sensible aspect ratio
+    QSize size = d->page->mainFrame()->contentsSize();
+    size.setHeight( size.width() * d->size.height() / d->size.width() );
 
-    QPainter paint( &d->thumbnail );
-    d->page->mainFrame()->render( &paint, QRegion( QRect(QPoint(0,0), d->size) ) );
+    // create the target surface
+    d->thumbnail = QImage( size, QImage::Format_ARGB32_Premultiplied );
+    d->thumbnail.fill( Qt::transparent );
+
+    // render and rescale
+    QPainter p( &(d->thumbnail) );
+    d->page->setViewportSize( d->page->mainFrame()->contentsSize() );
+    d->page->mainFrame()->render( &p );
+    p.end();
+
+    d->thumbnail = d->thumbnail.scaled( d->size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation );
+
     emit done(success);
 }
 
-QPixmap KWebThumbnailer::thumbnail() const
+QImage KWebThumbnailer::thumbnail() const
 {
     return d->thumbnail;
 }

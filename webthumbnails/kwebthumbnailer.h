@@ -2,7 +2,6 @@
 #define KWEBTHUMBNAILER_H
 
 #include <QtCore/QObject>
-#include <QtGui/QPixmap>
 #include <QtGui/QImage>
 
 class QUrl;
@@ -19,11 +18,10 @@ public:
 
     void setUrl( const QUrl &url );
     void setSize( const QSize &size );
-    void setZoomFactory( double zoom );
 
     void start();
 
-    QPixmap thumbnail() const;
+    QImage thumbnail() const;
 
     bool isValid() const;
 
