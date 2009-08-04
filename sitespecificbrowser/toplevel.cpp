@@ -34,6 +34,8 @@ TopLevel::TopLevel()
 
     QWebSettings::globalSettings()->setAttribute( QWebSettings::PluginsEnabled, true );
     QWebSettings::setIconDatabasePath( QString("./icons") );
+    QIcon icon = QWebSettings::iconForUrl( QUrl("http://mail.google.com/") );
+    qDebug() << icon;
 
     setWindowTitle( QString("GMail") );
     setUrl( QUrl("http://mail.google.com/") );
@@ -44,5 +46,9 @@ TopLevel::TopLevel()
 void TopLevel::iconLoaded()
 {
     qDebug() << "Got icon";
+    qDebug() << m_page->mainFrame()->icon().isNull();
     setWindowIcon( m_page->mainFrame()->icon() );
+
+//    QIcon icon = QWebSettings::iconForUrl( QUrl("http://mail.google.com/") );
+//    qDebug() << icon;
 }
