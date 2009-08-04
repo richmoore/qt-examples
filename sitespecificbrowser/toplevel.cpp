@@ -25,6 +25,16 @@ bool Page::acceptNavigationRequest( QWebFrame *frame, const QNetworkRequest &req
     return QWebPage::acceptNavigationRequest( frame, request, type );
 }
 
+/** Stuff that should be per-webapp
+struct WebAppOptions
+{
+    QUrl startUrl;
+    QList<QUrl> allowedBases;
+    QIcon windowIcon;
+    QString windowTitle;
+    QMap<QString, QString> jsActions;
+};
+*/
 
 TopLevel::TopLevel()
     : QWebView(0)
