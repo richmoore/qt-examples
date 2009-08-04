@@ -1,0 +1,25 @@
+Site Specific Browser Prototype
+===============================
+
+This is a prototype site-specific browser. Current features:
+
+- Full isolation of the site-specific browser from your normal browser.
+
+- Launches your default browser when you try to navigate outside the current
+  web app.
+
+- Not much else!
+
+Stuff to Configure per-webapp
+=============================
+
+- Icon
+- Window title
+- Base URL
+- White list of allowed navigation URLs
+- Bookmarklets (Action name -> js code)
+  The js code would be executed in the context of the current page.
+- Fluid offers a few things worth considering:
+  - Greasemonkey style user-scripts
+  - Notification integration
+  - More details http://fluidapp.com/developer/
