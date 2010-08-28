@@ -23,8 +23,6 @@ QNetworkReply *WhiteListNetworkAccessManager::createRequest( Operation op,
                                                              const QNetworkRequest &req,
                                                              QIODevice *outgoingData )
 {
-    QNetworkRequest myReq( req );
-
     // If host is not whitelisted then kill it
     if ( !isAllowed( req.url().host() ) ) {
         QCustomNetworkReply *reply = new QCustomNetworkReply();
@@ -35,6 +33,6 @@ QNetworkReply *WhiteListNetworkAccessManager::createRequest( Operation op,
         return reply;
     }
 
-    QNetworkReply *reply = QNetworkAccessManager::createRequest( op, myReq, outgoingData );
+    QNetworkReply *reply = QNetworkAccessManager::createRequest( op, req, outgoingData );
     return reply;
 }
