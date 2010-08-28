@@ -22,10 +22,6 @@ public:
     qint64 bytesAvailable() const;
     bool isSequential() const;
 
-signals:
-    void readyRead();
-    void finished();
-
 protected:
     qint64 readData(char *data, qint64 maxSize);
 
