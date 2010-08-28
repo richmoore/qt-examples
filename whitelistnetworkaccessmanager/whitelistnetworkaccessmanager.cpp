@@ -14,7 +14,7 @@ void WhiteListNetworkAccessManager::addDomain( const QString &domain )
 
 bool WhiteListNetworkAccessManager::isAllowed( const QString &domain )
 {
-    return (allowedDomains[domain] == 1); // Rely on Qt's default of 0 for non-existent ints
+    return allowedDomains.contains(domain);
 }
 
 QNetworkReply *WhiteListNetworkAccessManager::createRequest( Operation op,
