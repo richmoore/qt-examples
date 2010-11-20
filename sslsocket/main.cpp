@@ -20,7 +20,9 @@ int main( int argc, char **argv )
         return 1;
     }
 
-    socket.write( "GET / HTTP/1.1\r\nHost: bugs.kde.org\r\n\r\n" );
+    socket.write( "GET / HTTP/1.1\r\n" \
+                  "Host: bugs.kde.org\r\n" \
+                  "Connection: Close\r\n\r\n" );
     while ( socket.waitForReadyRead() ) {
         qDebug() <<  socket.readAll().data();
     };
