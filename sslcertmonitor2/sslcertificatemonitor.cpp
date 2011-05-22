@@ -86,9 +86,6 @@ bool SslCertificateMonitor::createCertificateCache()
 
 void SslCertificateMonitor::addCertificate(const QString &peerName, const QSslCertificate &cert)
 {
-    QByteArray digest = cert.digest();
-    d->acceptedCache.insert(peerName,new QByteArray(digest));
-
     if (!hasCertificateCache()) {
         bool ok = createCertificateCache();
         if (!ok)
@@ -100,7 +97,7 @@ void SslCertificateMonitor::addCertificate(const QString &peerName, const QSslCe
     if (!f.open(QIODevice::WriteOnly))
         return;
 
-    f.write(digest);
+    f.write(cert.digest());
     f.close();
 }
 
@@ -167,6 +164,7 @@ void SslCertificateMonitor::socketReady(QObject *sockobj)
     // If the user has chosen to accept the certificate or the certficate is new
     // then we store the updated entry.
     if (d->acceptCurrent) {
+        d->acceptedCache.insert(peerName,new QByteArray(digest));
         addCertificate(peerName, certificate);
     }
     else {
