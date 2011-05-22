@@ -86,14 +86,14 @@ bool SslCertificateMonitor::createCertificateCache()
 
 void SslCertificateMonitor::addCertificate(const QString &peerName, const QSslCertificate &cert)
 {
+    QByteArray digest = cert.digest();
+    d->acceptedCache.insert(peerName,new QByteArray(digest));
+
     if (!hasCertificateCache()) {
         bool ok = createCertificateCache();
         if (!ok)
             return;
     }
-
-    QByteArray digest = cert.digest();
-    d->acceptedCache.insert(peerName,new QByteArray(digest));
 
     QString cacheEntry = d->cacheDir + QLatin1Char('/') + peerName;
     QFile f( cacheEntry );
