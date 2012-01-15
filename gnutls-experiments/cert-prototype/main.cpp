@@ -87,6 +87,35 @@ static QDateTime x509_cert_get_expiry(const gnutls_x509_crt_t cert)
     return result.toUTC();
 }
 
+static bool load_x509_cert_list(gnutls_x509_crt_t **certs, unsigned int *size, const QString &filename)
+{
+    qDebug() << "load_x509_cert_list" << filename;
+
+    QFile f(filename);
+    if (!f.open(QIODevice::ReadOnly)) {
+        qDebug() << "Unable to open cert file" << filename;
+        return false;
+    }
+
+    QByteArray buf = f.readAll();
+    f.close();
+
+    // Setup a datum
+    gnutls_datum_t buffer;
+    buffer.data = (unsigned char *)(buf.data());
+    buffer.size = buf.size();
+
+    int flags = 0; // We don't want to fail if unsorted, and our buffer can't be too short
+    int result = gnutls_x509_crt_list_import2(certs, size, &buffer, GNUTLS_X509_FMT_PEM, flags);
+    
+    if (result < 0) {
+        qDebug() << "Failed to import cert list" << gnutls_strerror(result);
+        return false;
+    }
+
+    return true;
+}
+
 //
 // Stuff that needs more work.
 //
