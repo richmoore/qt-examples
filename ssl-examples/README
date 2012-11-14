@@ -1,0 +1,9 @@
+These are the examples I used in my talk at Qt Developer Days 2012, 'Using SSL
+the right way with Qt'. Each provides a recipe of how to handle a common use
+of the SSL support within Qt safely - connecting to the web normally, handling
+user exceptions, using development servers without buying a certificate etc.
+
+In order to setup the local test server I used during the talk, you can run
+openssl like this in the tinyca directory:
+
+openssl s_server -www -cert test.site-cert.pem -key test.site-key.pem
