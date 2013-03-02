@@ -5,6 +5,7 @@
 
 class QSslCertificate;
 class QSslKey;
+class QSslError;
 
 struct SslServerPrivate;
 
@@ -17,9 +18,14 @@ public:
     ~SslServer();
 
 protected slots:
+    void errors(const QList<QSslError> &errs);
     void ready();
 protected:
+#if QT_VERSION >= 0x050000
+    void incomingConnection(qintptr socketDescriptor);
+#else
     void incomingConnection(int socketDescriptor);
+#endif
 
 private:
     SslServerPrivate *d;

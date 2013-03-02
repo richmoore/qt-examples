@@ -8,6 +8,8 @@ DEPENDPATH += .
 INCLUDEPATH += .
 QT += network
 
+QMAKE_CXXFLAGS +=  -Woverloaded-virtual
+
 # Input
 HEADERS += sslserver.h
 SOURCES += main.cpp sslserver.cpp

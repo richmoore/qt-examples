@@ -1,6 +1,7 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslSocket>
+#include <QStringList>
 
 #include "sslserver.h"
 
@@ -27,6 +28,20 @@ SslServer::~SslServer()
     delete d;
 }
 
+void SslServer::errors(const QList<QSslError> &errs)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    foreach (const QSslError &err, errs) {
+#if QT_VERSION >= 0x050000
+        QStringList names = err.certificate().subjectInfo(QSslCertificate::CommonName);
+        qDebug() << err << names;
+#else
+    qDebug() << err << err.certificate().subjectInfo(QSslCertificate::CommonName);
+#endif
+    }
+}
+
 void SslServer::ready()
 {
     qDebug() << Q_FUNC_INFO;
@@ -39,7 +54,11 @@ void SslServer::ready()
     d->sock->close();
 }
 
+#if QT_VERSION >= 0x050000
+void SslServer::incomingConnection(qintptr socketDescriptor)
+#else
 void SslServer::incomingConnection(int socketDescriptor)
+#endif
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -52,6 +71,8 @@ void SslServer::incomingConnection(int socketDescriptor)
         return;
     }
 
+    connect(d->sock, SIGNAL(sslErrors(const QList<QSslError> &)),
+            this, SLOT(errors(const QList<QSslError> &)));
     connect(d->sock, SIGNAL(encrypted()), this, SLOT(ready()));
 
     d->sock->setLocalCertificate(d->cert);
