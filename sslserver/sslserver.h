@@ -18,8 +18,8 @@ public:
     ~SslServer();
 
 protected slots:
-    void errors(const QList<QSslError> &errs);
     void ready();
+
 protected:
 #if QT_VERSION >= 0x050000
     void incomingConnection(qintptr socketDescriptor);
