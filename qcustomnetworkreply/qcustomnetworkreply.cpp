@@ -65,7 +65,7 @@ void QCustomNetworkReply::abort()
 
 qint64 QCustomNetworkReply::bytesAvailable() const
 {
-    return d->content.size() - d->offset;
+    return d->content.size() - d->offset + QIODevice::bytesAvailable();
 }
 
 bool QCustomNetworkReply::isSequential() const
