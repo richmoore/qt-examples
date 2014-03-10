@@ -42,8 +42,8 @@ void Connector::connectToHost()
 
 void Connector::dumpSslInfo()
 {
-    qDebug() << "Supports SSL:" << QSslSocket::supportsSsl();
-    qDebug() << "Run-time Library Version:" << QSslSocket::sslLibraryVersionString();
+    qDebug() << "Supports SSL:\t\t" << QSslSocket::supportsSsl();
+    qDebug() << "Run-time Library:\t" << QSslSocket::sslLibraryVersionString();
 }
 
 void Connector::dumpCertificate( const QSslCertificate &cert )
@@ -91,6 +91,14 @@ void Connector::dumpCipher( const QSslCipher &cipher )
     qDebug() << "Authentication:\t\t" << cipher.authenticationMethod();
     qDebug() << "Encryption:\t\t" << cipher.encryptionMethod();
     qDebug() << "Key Exchange:\t\t" << cipher.keyExchangeMethod();
+    if ( cipher.keyExchangeMethod() == QLatin1String("DH")
+         || cipher.keyExchangeMethod() == QLatin1String("ECDH") ) {
+        qDebug() << "Forward Secrecy:\t Yes";
+    }
+    else {
+        qDebug() << "Forward Secrecy:\t No";
+    }
+
     qDebug() << "Cipher Name:\t\t" << cipher.name();
     qDebug() << "Protocol:\t\t" <<  cipher.protocolString();
     qDebug() << "Supported Bits:\t\t" << cipher.supportedBits();
@@ -124,11 +132,11 @@ void Connector::sslError( const QList<QSslError> &errors )
         qDebug() << "SSL Error: " << error.errorString();
         QSslCertificate cert = error.certificate();
         if (cert.isNull()) {
-            qDebug() << "Certificate: <null>";
+            qDebug() << "\tCertificate: <null>";
         }
         else {
-            qDebug() << "Common Name: " << cert.subjectInfo(QSslCertificate::CommonName);
-            qDebug() << "Organization: " << cert.subjectInfo(QSslCertificate::Organization);
+            qDebug() << "\tCommon Name: " << cert.subjectInfo(QSslCertificate::CommonName);
+            qDebug() << "\tOrganization: " << cert.subjectInfo(QSslCertificate::Organization);
         }            
     }
 
