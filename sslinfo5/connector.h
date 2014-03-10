@@ -17,6 +17,7 @@ public:
 
     void connectToHost();
 
+    void dumpSslInfo();
     void dumpCertificate( const QSslCertificate &cert );
     void dumpCipher( const QSslCipher &cipher );
 

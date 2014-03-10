@@ -23,6 +23,8 @@ Connector::Connector( const QString &host, int port )
 
 Connector::~Connector()
 {
+    if (d->sock)
+        delete d->sock;
     delete d;
 }
 
