@@ -28,6 +28,8 @@ Connector::~Connector()
 
 void Connector::connectToHost()
 {
+    dumpSslInfo();
+
     qDebug() << "Connecting...";
 
     d->sock = new QSslSocket(this);
@@ -36,6 +38,12 @@ void Connector::connectToHost()
     connect( d->sock, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslError(const QList<QSslError> &)) );
 
     d->sock->connectToHostEncrypted( d->host, d->port );
+}
+
+void Connector::dumpSslInfo()
+{
+    qDebug() << "Supports SSL:" << QSslSocket::supportsSsl();
+    qDebug() << "Run-time Library Version:" << QSslSocket::sslLibraryVersionString();
 }
 
 void Connector::dumpCertificate( const QSslCertificate &cert )
@@ -106,12 +114,22 @@ void Connector::ready()
 void Connector::socketError( QAbstractSocket::SocketError error )
 {
     qDebug() << "Socket Error: " << d->sock->errorString() << " (" << int(error) << ")";
+    qDebug() << "Connection Failed";
+    qApp->quit();
 }
 
 void Connector::sslError( const QList<QSslError> &errors )
 {
     foreach( const QSslError &error, errors ) {
         qDebug() << "SSL Error: " << error.errorString();
+        QSslCertificate cert = error.certificate();
+        if (cert.isNull()) {
+            qDebug() << "Certificate: <null>";
+        }
+        else {
+            qDebug() << "Common Name: " << cert.subjectInfo(QSslCertificate::CommonName);
+            qDebug() << "Organization: " << cert.subjectInfo(QSslCertificate::Organization);
+        }            
     }
 
     // This is only used because we are interested in dumping all the info
