@@ -62,6 +62,11 @@ void SslServer::incomingConnection(int socketDescriptor)
     d->sock->setLocalCertificate(d->cert);
     d->sock->setPrivateKey(d->key);
 
+    // Select DH suite
+    //    d->sock->setCiphers("DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA");
+    // Select ECDH suite
+    //    d->sock->setCiphers("ECDHE-RSA-AES128-SHA:AES128-SHA:RC4-SHA");
+
     d->sock->startServerEncryption();
 }
 
