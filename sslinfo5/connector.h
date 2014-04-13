@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QAbstractSocket>
+#include <QSsl>
 
 class QSslError;
 class QSslCertificate;
@@ -17,6 +18,7 @@ public:
 
     void connectToHost();
 
+    void dumpProtocol(QSsl::SslProtocol proto);
     void dumpSslInfo();
     void dumpCertificate( const QSslCertificate &cert );
     void dumpCipher( const QSslCipher &cipher );

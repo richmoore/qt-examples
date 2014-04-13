@@ -46,6 +46,8 @@ void Connector::dumpSslInfo()
 {
     qDebug() << "Supports SSL:\t\t" << QSslSocket::supportsSsl();
     qDebug() << "Run-time Library:\t" << QSslSocket::sslLibraryVersionString();
+    qDebug() << "Run-time Library Version:\t" << QSslSocket::sslLibraryVersionNumber();
+    qDebug() << "Build-time Library:\t" << QSslSocket::sslLibraryBuildVersionString();
 }
 
 void Connector::dumpCertificate( const QSslCertificate &cert )
@@ -107,8 +109,47 @@ void Connector::dumpCipher( const QSslCipher &cipher )
     qDebug() << "Used Bits:\t\t" << cipher.usedBits();
 }
 
+void Connector::dumpProtocol(QSsl::SslProtocol proto)
+{
+    switch(proto) {
+    case QSsl::SslV3:
+        qDebug() << "Protocol:\t\tSSL 3";
+        break;
+    case QSsl::SslV2:
+        qDebug() << "Protocol:\t\tSSL 2";
+        break;
+    case QSsl::TlsV1_0:
+        qDebug() << "Protocol:\t\tTLS 1.0";
+        break;
+    case QSsl::TlsV1_1:
+        qDebug() << "Protocol:\t\tTLS 1.1";
+        break;
+    case QSsl::TlsV1_2:
+        qDebug() << "Protocol:\t\tTLS 1.2";
+        break;
+    case QSsl::AnyProtocol:
+        qDebug() << "Protocol:\t\tAny Protocol";
+        break;
+    case QSsl::TlsV1SslV3:
+        qDebug() << "Protocol:\t\tTLS1/SSL3";
+        break;
+    case QSsl::SecureProtocols:
+        qDebug() << "Protocol:\t\tSecure Protocols";
+        break;
+    default:
+        qDebug() << "Protocol:\t\tUnknown";
+        break;
+    }
+}
+
 void Connector::ready()
 {
+    qDebug() << " === Requested Protocol ===";
+    dumpProtocol(d->sock->protocol());
+
+    qDebug() << " === Session Protocol ===";
+    //dumpProtocol(d->sock->sessionProtocol());
+
     qDebug() << " === Peer Certificate ===";
 
     QSslCertificate cert = d->sock->peerCertificate();
