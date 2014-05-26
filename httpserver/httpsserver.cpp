@@ -3,7 +3,7 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslConfiguration>
-#include <QTcpSocket>
+#include <QSslSocket>
 
 #include "qsslserver.h"
 #include "httprequesthandler.h"
@@ -44,7 +44,7 @@ HttpsServer::~HttpsServer()
 void HttpsServer::handleConnection()
 {
     while(server->hasPendingConnections()) {
-        QTcpSocket *sock = server->nextPendingConnection();
+        QSslSocket *sock = server->nextPendingConnection();
         HttpRequestHandler *handler = new HttpRequestHandler(sock, this);
     }
 }

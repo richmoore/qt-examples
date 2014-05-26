@@ -66,6 +66,11 @@ QSslConfiguration QSslServer::sslConfiguration() const
     return m_sslConfiguration;
 }
 
+QSslSocket *QSslServer::nextPendingConnection()
+{
+    return static_cast<QSslSocket *>(QTcpServer::nextPendingConnection());
+}
+
 void QSslServer::incomingConnection(qintptr socket)
 {
     QSslSocket *pSslSocket = new QSslSocket();

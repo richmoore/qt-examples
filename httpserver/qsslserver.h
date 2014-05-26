@@ -61,6 +61,8 @@ public:
     void setSslConfiguration(const QSslConfiguration &sslConfiguration);
     QSslConfiguration sslConfiguration() const;
 
+    QSslSocket *nextPendingConnection();
+
 Q_SIGNALS:
     void sslErrors(const QList<QSslError> &errors);
     void peerVerifyError(const QSslError &error);
